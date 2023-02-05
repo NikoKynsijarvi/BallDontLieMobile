@@ -1,26 +1,28 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import LoginView from './Views/LoginView';
-import MapScreenView from './Views/MapScreenView';
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import LoginView from "./Views/LoginView";
+import MapScreenView from "./Views/MapScreenView";
 
 export default function App() {
+  const { user, setUser } = useState(true);
+
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
         <MapScreenView />
-         <StatusBar style="auto" />
+        <StatusBar style="auto" />
       </View>
     </GestureHandlerRootView>
-   
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#080c24ff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#080c24ff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

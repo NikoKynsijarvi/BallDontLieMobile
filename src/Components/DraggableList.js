@@ -5,6 +5,8 @@ import {
   useWindowDimensions,
   Button,
   ScrollView,
+  Text,
+  TextInput,
 } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
@@ -14,6 +16,9 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import CourtRow from "./CourtRow";
+import CourtInfoView from "./CourtInfoView";
+import SearchBar from "./SearchInput";
+import react, { useState } from "react";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -25,10 +30,11 @@ const SPRING_CONFIG = {
 const DraggableList = () => {
   const dimensios = useWindowDimensions();
   const top = useSharedValue(dimensios.height);
+  const [clicked, setClicked] = useState(false);
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart(_, context) {
-        context.startTop = top.value;
+      context.startTop = top.value;
     },
     onActive(event, context) {
       top.value = context.startTop + event.translationY;
@@ -48,28 +54,18 @@ const DraggableList = () => {
     };
   });
 
-  const testArray = new Array(20);
-
   return (
     <PanGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View style={[styles.container, style]}>
-        <ScrollView style={styles.scrollContainer}>
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
-          <CourtRow />
+        <View style={styles.line} />
+        <View style={styles.titleContainer}>
+          <Text style={styles.title}>Courts</Text>
+        </View>
+        <ScrollView style={styles.scrollContainer} horizontal={true}>
+          <CourtInfoView />
+          <CourtInfoView />
+          <CourtInfoView />
+          <CourtInfoView />
         </ScrollView>
       </Animated.View>
     </PanGestureHandler>
@@ -97,19 +93,41 @@ const styles = StyleSheet.create({
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
   },
   scrollContainer: {
     width: "100%",
     height: "100%",
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row",
+  },
+  titleContainer: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
   },
   line: {
     width: 75,
     height: 5,
     backgroundColor: "gray",
     alignSelf: "center",
-    marginVertical: 15,
+    marginVertical: 5,
     borderRadius: 2,
+  },
+  title: {
+    fontSize: 35,
+    paddingLeft: 10,
+    color: "white",
+  },
+  inputField: {
+    backgroundColor: "#151e34ff",
+    justifyContent: "flex-start",
+    alignItems: "center",
+    flexDirection: "row",
+    width: "60%",
+    height: 25,
   },
 });

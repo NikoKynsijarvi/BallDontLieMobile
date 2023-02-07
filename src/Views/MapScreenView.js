@@ -2,15 +2,30 @@ import MapView from "react-native-maps";
 import { StyleSheet, View } from "react-native";
 import DraggableList from "../Components/DraggableList";
 import MenuButton from "../Components/MenuButton";
-import SearchButton from "../Components/SearchButton";
+import courtsService from "./../services/Courts";
+import { useEffect, useState } from "react";
 
 const MapScreenView = () => {
+  const [courts, setCourts] = useState([]);
+  console.log(courts);
+  useEffect(() => {
+    courtsService
+      .getCourts()
+      .then((res) => {
+        setCourts(res);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   return (
     <View style={styles.container}>
       <MapView userInterfaceStyle="dark" style={styles.map}></MapView>
+      <View style={styles.mapViewButtons}>
+        <MenuButton />
+      </View>
       <DraggableList />
-      <MenuButton />
-      <SearchButton />
     </View>
   );
 };
@@ -26,6 +41,16 @@ const styles = StyleSheet.create({
   map: {
     width: "100%",
     height: "100%",
+  },
+  mapViewButtons: {
+    width: "100%",
+    position: "absolute",
+    top: 0,
+    display: "flex",
+    flexDirection: "row",
+    height: "10%",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 

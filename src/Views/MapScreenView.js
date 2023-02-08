@@ -3,28 +3,12 @@ import { StyleSheet, View } from "react-native";
 import DraggableList from "../Components/DraggableList";
 import MenuButton from "../Components/MenuButton";
 import courtsService from "./../services/Courts";
-import { useEffect, useState } from "react";
 
 const MapScreenView = () => {
-  const [courts, setCourts] = useState([]);
-  console.log(courts);
-  useEffect(() => {
-    courtsService
-      .getCourts()
-      .then((res) => {
-        setCourts(res);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);
-
   return (
     <View style={styles.container}>
       <MapView userInterfaceStyle="dark" style={styles.map}></MapView>
-      <View style={styles.mapViewButtons}>
-        <MenuButton />
-      </View>
+
       <DraggableList />
     </View>
   );

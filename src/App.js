@@ -1,28 +1,14 @@
-import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import LoginView from "./Views/LoginView";
-import MapScreenView from "./Views/MapScreenView";
+import MainView from "./Views/MainView";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import courtReducer from "./Reducers/CourtsReducer";
 
 export default function App() {
-  const { user, setUser } = useState(true);
+  const store = createStore(courtReducer);
 
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <View style={styles.container}>
-        <MapScreenView />
-        <StatusBar style="auto" />
-      </View>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <MainView />
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#080c24ff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

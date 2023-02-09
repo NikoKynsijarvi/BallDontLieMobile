@@ -7,6 +7,7 @@ import {
   ScrollView,
   Text,
   TextInput,
+  FlatList,
 } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
@@ -15,10 +16,10 @@ import Animated, {
   useSharedValue,
   withSpring,
 } from "react-native-reanimated";
-import CourtRow from "./CourtRow";
 import CourtInfoView from "./CourtInfoView";
 import SearchBar from "./SearchInput";
 import react, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -28,6 +29,7 @@ const SPRING_CONFIG = {
 };
 
 const DraggableList = () => {
+  const state = useSelector((state) => state);
   const dimensios = useWindowDimensions();
   const top = useSharedValue(dimensios.height);
   const [clicked, setClicked] = useState(false);
@@ -61,12 +63,17 @@ const DraggableList = () => {
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Courts</Text>
         </View>
-        <ScrollView style={styles.scrollContainer} horizontal={true}>
-          <CourtInfoView />
-          <CourtInfoView />
-          <CourtInfoView />
-          <CourtInfoView />
-        </ScrollView>
+        <FlatList
+          style={styles.scrollContainer}
+          data={state.courts}
+          horizontal={true}
+          renderItem={({ item }) => (
+            <CourtInfoView
+              name={item.name.fi}
+              municipality={item.municipality}
+            />
+          )}
+        />
       </Animated.View>
     </PanGestureHandler>
   );

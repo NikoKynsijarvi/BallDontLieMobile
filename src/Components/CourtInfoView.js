@@ -1,6 +1,7 @@
 import { View, StyleSheet, Text, Pressable } from "react-native";
 
-const CourtInfoView = () => {
+const CourtInfoView = ({ name, municipality }) => {
+  var placeName = name.split("/");
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -14,8 +15,8 @@ const CourtInfoView = () => {
             left: 0,
           }}
         >
-          <Text style={styles.nameText}>Pihlajamäen ala-aste</Text>
-          <Text style={styles.city}>Helsinki</Text>
+          <Text style={styles.nameText}>{placeName[0]}</Text>
+          <Text style={styles.city}>{municipality.toUpperCase()}</Text>
         </View>
         <Pressable style={styles.pressable}>
           <Text style={{ fontSize: 25, color: "#fff" }}>Search</Text>

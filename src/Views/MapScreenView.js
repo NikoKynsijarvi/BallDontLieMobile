@@ -3,33 +3,66 @@ import { StyleSheet, View } from "react-native";
 import DraggableList from "../Components/DraggableList";
 import MenuButton from "../Components/MenuButton";
 import courtsService from "./../services/Courts";
+import SideBar from "../Components/SideBar";
 import { useSelector } from "react-redux";
 
+const CourtMarker = ({ court, selectedCourt }) => {
+  if (selectedCourt && court.id !== selectedCourt) {
+    return null;
+  }
+  if (!selectedCourt) {
+    return (
+      <Marker
+        key={court.id}
+        pinColor={"green"}
+        coordinate={{
+          latitude: court.location.coordinates[1],
+          longitude: court.location.coordinates[0],
+        }}
+      />
+    );
+  }
+  if (selectedCourt && selectedCourt === court.id) {
+    return (
+      <Marker
+        key={court.id}
+        pinColor={"green"}
+        coordinate={{
+          latitude: court.location.coordinates[1],
+          longitude: court.location.coordinates[0],
+        }}
+      />
+    );
+  }
+};
+
 const MapScreenView = () => {
-  const state = useSelector((state) => state);
+  const courts = useSelector((state) => state.courts);
+  const mapControls = useSelector((state) => state.mapControls);
+
+  const isActive = (id) => {
+    return id === courts.selectedCourt ? true : false;
+  };
+
   return (
     <View style={styles.container}>
       <MapView
         userInterfaceStyle="dark"
         style={styles.map}
-        initialRegion={{
-          latitude: 60.165987,
-          longitude: 24.942709,
-          latitudeDelta: 0.15,
-          longitudeDelta: 0.15,
-        }}
+        region={mapControls}
       >
-        {state.courts.map((court) => (
-          <Marker
+        <MenuButton />
+
+        {courts.courts.map((court) => (
+          <CourtMarker
             key={court.id}
-            coordinate={{
-              latitude: court.location.coordinates[1],
-              longitude: court.location.coordinates[0],
-            }}
+            court={court}
+            selectedCourt={courts.selectedCourt}
           />
         ))}
       </MapView>
       <DraggableList />
+      <SideBar />
     </View>
   );
 };

@@ -1,7 +1,22 @@
 import { View, StyleSheet, Text, Pressable } from "react-native";
+import { useDispatch } from "react-redux";
+import { focusToLocation } from "../Reducers/MapControlReducer";
+import { selectCourt } from "../Reducers/CourtsReducer";
 
-const CourtInfoView = ({ name, municipality }) => {
+const CourtInfoView = ({ name, municipality, coords, id }) => {
+  const dispatch = useDispatch();
   var placeName = name.split("/");
+
+  const onSearchPress = (e) => {
+    e.preventDefault();
+    const courtCoords = {
+      latitude: coords[1],
+      longitude: coords[0],
+    };
+    dispatch(focusToLocation(courtCoords));
+    dispatch(selectCourt(id));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -18,7 +33,15 @@ const CourtInfoView = ({ name, municipality }) => {
           <Text style={styles.nameText}>{placeName[0]}</Text>
           <Text style={styles.city}>{municipality.toUpperCase()}</Text>
         </View>
-        <Pressable style={styles.pressable}>
+        <Pressable
+          style={({ pressed }) => [
+            {
+              backgroundColor: pressed ? "#7f03fc" : "#F27649",
+            },
+            styles.pressable,
+          ]}
+          onPress={(e) => onSearchPress(e)}
+        >
           <Text style={{ fontSize: 25, color: "#fff" }}>Search</Text>
         </Pressable>
       </View>
@@ -66,7 +89,6 @@ const styles = StyleSheet.create({
     zIndex: 999,
     position: "absolute",
     height: "20%",
-    backgroundColor: "#F27649",
     alignSelf: "flex-end",
     borderRadius: 20,
     bottom: 15,

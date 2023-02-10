@@ -3,11 +3,10 @@ import {
   StyleSheet,
   Dimensions,
   useWindowDimensions,
-  Button,
-  ScrollView,
   Text,
-  TextInput,
+  Image,
   FlatList,
+  Pressable,
 } from "react-native";
 import { PanGestureHandler } from "react-native-gesture-handler";
 import Animated, {
@@ -17,9 +16,9 @@ import Animated, {
   withSpring,
 } from "react-native-reanimated";
 import CourtInfoView from "./CourtInfoView";
-import SearchBar from "./SearchInput";
 import react, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { unselectCourt } from "../Reducers/CourtsReducer";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -29,10 +28,10 @@ const SPRING_CONFIG = {
 };
 
 const DraggableList = () => {
-  const state = useSelector((state) => state);
+  const state = useSelector((state) => state.courts);
   const dimensios = useWindowDimensions();
   const top = useSharedValue(dimensios.height);
-  const [clicked, setClicked] = useState(false);
+  const dispatch = useDispatch();
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart(_, context) {
@@ -56,12 +55,31 @@ const DraggableList = () => {
     };
   });
 
+  const onZoomOutPress = () => {
+    dispatch(unselectCourt());
+  };
+
   return (
     <PanGestureHandler onGestureEvent={gestureHandler}>
       <Animated.View style={[styles.container, style]}>
         <View style={styles.line} />
         <View style={styles.titleContainer}>
           <Text style={styles.title}>Courts</Text>
+          <Pressable
+            onPress={onZoomOutPress}
+            style={({ pressed }) => [
+              {
+                transform: [{ scale: pressed ? 1.1 : 1 }],
+              },
+            ]}
+          >
+            <Image
+              source={require("./../../assets/zoom_out.png")}
+              style={{
+                transform: [{ scale: 0.9 }],
+              }}
+            />
+          </Pressable>
         </View>
         <FlatList
           style={styles.scrollContainer}
@@ -71,6 +89,8 @@ const DraggableList = () => {
             <CourtInfoView
               name={item.name.fi}
               municipality={item.municipality}
+              coords={item.location.coordinates}
+              id={item.id}
             />
           )}
         />

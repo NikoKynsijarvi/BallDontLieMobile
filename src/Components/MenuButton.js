@@ -3,7 +3,9 @@ import { View, StyleSheet, Image, Pressable } from "react-native";
 const MenuButton = () => {
   return (
     <Pressable style={styles.container}>
-      <Image source={require("./../../assets/menu.png")} />
+      <View style={styles.line} />
+      <View style={styles.line} />
+      <View style={styles.line} />
     </Pressable>
   );
 };
@@ -19,7 +21,13 @@ const styles = StyleSheet.create({
     top: 50,
     left: 30,
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-evenly",
+  },
+  line: {
+    width: "60%",
+    height: 5,
+    backgroundColor: "black",
   },
 });

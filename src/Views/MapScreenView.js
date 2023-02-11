@@ -5,6 +5,9 @@ import MenuButton from "../Components/MenuButton";
 import courtsService from "./../services/Courts";
 import SideBar from "../Components/SideBar";
 import { useSelector } from "react-redux";
+import CourtMarkerCustom from "../Components/Marker";
+import SearchBar from "../Components/SearchInput";
+import { useState } from "react";
 
 const CourtMarker = ({ court, selectedCourt }) => {
   if (selectedCourt && court.id !== selectedCourt) {
@@ -14,24 +17,26 @@ const CourtMarker = ({ court, selectedCourt }) => {
     return (
       <Marker
         key={court.id}
-        pinColor={"green"}
         coordinate={{
           latitude: court.location.coordinates[1],
           longitude: court.location.coordinates[0],
         }}
-      />
+      >
+        <CourtMarkerCustom />
+      </Marker>
     );
   }
   if (selectedCourt && selectedCourt === court.id) {
     return (
       <Marker
         key={court.id}
-        pinColor={"green"}
         coordinate={{
           latitude: court.location.coordinates[1],
           longitude: court.location.coordinates[0],
         }}
-      />
+      >
+        <CourtMarkerCustom />
+      </Marker>
     );
   }
 };
@@ -39,6 +44,7 @@ const CourtMarker = ({ court, selectedCourt }) => {
 const MapScreenView = () => {
   const courts = useSelector((state) => state.courts);
   const mapControls = useSelector((state) => state.mapControls);
+  const [clicked, setClicked] = useState(false);
 
   const isActive = (id) => {
     return id === courts.selectedCourt ? true : false;
@@ -51,8 +57,6 @@ const MapScreenView = () => {
         style={styles.map}
         region={mapControls}
       >
-        <MenuButton />
-
         {courts.courts.map((court) => (
           <CourtMarker
             key={court.id}
@@ -63,6 +67,18 @@ const MapScreenView = () => {
       </MapView>
       <DraggableList />
       <SideBar />
+      <View
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          top: 50,
+          position: "absolute",
+        }}
+      >
+        <SearchBar clicked={clicked} setClicked={setClicked} />
+      </View>
     </View>
   );
 };

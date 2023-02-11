@@ -24,7 +24,17 @@ const SearchBar = ({ clicked, setClicked }) => {
       </View>
       {/* cancel button, depending on whether the search bar is clicked or not */}
       {clicked && (
-        <View>
+        <View
+          style={{
+            backgroundColor: "#080c24ff",
+            height: "100%",
+            borderRadius: 20,
+            left: -30,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <Button
             title="Cancel"
             onPress={() => {
@@ -45,12 +55,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     flexDirection: "row",
-    width: "80%",
+    width: "60%",
+    alignSelf: "center",
   },
   searchBar__unclicked: {
     padding: 10,
+    height: "100%",
     flexDirection: "row",
-    width: "85%",
+    width: "100%",
     backgroundColor: "#151e34ff",
     borderRadius: 15,
     alignItems: "center",

@@ -2,8 +2,8 @@ const mapcontrolReducer = (
   state = {
     latitude: 60.165987,
     longitude: 24.942709,
-    latitudeDelta: 0.15,
-    longitudeDelta: 0.15,
+    latitudeDelta: 0.8,
+    longitudeDelta: 0.8,
   },
   action
 ) => {

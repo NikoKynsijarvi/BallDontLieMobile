@@ -26,7 +26,6 @@ export default function MainView() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
         <MapScreenView />
-        <StatusBar style="auto" />
       </View>
     </GestureHandlerRootView>
   );

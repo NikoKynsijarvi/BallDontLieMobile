@@ -1,8 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, TextInput, View, Keyboard, Button } from "react-native";
+import { filterByName } from "../Reducers/SettingsReducer";
+import { useDispatch, useSelector } from "react-redux";
 
 const SearchBar = ({ clicked, setClicked }) => {
+  const searchText = useSelector((state) => state.settings.filterText);
+  const dispatch = useDispatch();
   const [searchPhrase, setSearchPhrase] = useState("");
+
+  useEffect(() => {
+    dispatch(filterByName(searchPhrase));
+  }, [searchPhrase]);
+
+  const handleCancel = () => {
+    Keyboard.dismiss();
+    setClicked(false);
+    dispatch(filterByName(""));
+  };
+
   return (
     <View style={styles.container}>
       <View
@@ -15,7 +30,7 @@ const SearchBar = ({ clicked, setClicked }) => {
           style={styles.input}
           placeholder="Search"
           placeholderTextColor="white"
-          value={searchPhrase}
+          value={searchText}
           onChangeText={setSearchPhrase}
           onFocus={() => {
             setClicked(true);
@@ -38,8 +53,7 @@ const SearchBar = ({ clicked, setClicked }) => {
           <Button
             title="Cancel"
             onPress={() => {
-              Keyboard.dismiss();
-              setClicked(false);
+              handleCancel();
             }}
           ></Button>
         </View>

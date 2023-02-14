@@ -44,11 +44,11 @@ const CourtMarker = ({ court, selectedCourt }) => {
 const MapScreenView = () => {
   const courts = useSelector((state) => state.courts);
   const mapControls = useSelector((state) => state.mapControls);
+  const settings = useSelector((state) => state.settings);
   const [clicked, setClicked] = useState(false);
-
-  const isActive = (id) => {
-    return id === courts.selectedCourt ? true : false;
-  };
+  const filteredCourts = courts.courts.filter((court) => {
+    return court.name.fi.includes(settings.filterText);
+  });
 
   return (
     <View style={styles.container}>
@@ -57,7 +57,7 @@ const MapScreenView = () => {
         style={styles.map}
         region={mapControls}
       >
-        {courts.courts.map((court) => (
+        {filteredCourts.map((court) => (
           <CourtMarker
             key={court.id}
             court={court}

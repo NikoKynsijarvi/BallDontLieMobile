@@ -29,9 +29,13 @@ const SPRING_CONFIG = {
 
 const DraggableList = () => {
   const state = useSelector((state) => state.courts);
+  const settings = useSelector((state) => state.settings);
   const dimensios = useWindowDimensions();
   const top = useSharedValue(dimensios.height);
   const dispatch = useDispatch();
+  const filteredCourts = state.courts.filter((court) => {
+    return court.name.fi.includes(settings.filterText);
+  });
 
   const gestureHandler = useAnimatedGestureHandler({
     onStart(_, context) {
@@ -83,7 +87,7 @@ const DraggableList = () => {
         </View>
         <FlatList
           style={styles.scrollContainer}
-          data={state.courts}
+          data={filteredCourts}
           horizontal={true}
           renderItem={({ item }) => (
             <CourtInfoView
